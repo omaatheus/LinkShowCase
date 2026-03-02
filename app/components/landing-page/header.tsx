@@ -10,9 +10,6 @@ export default async function Header() {
 
   return (
     <header className="w-full bg-white border-b border-gray-100 relative z-50">
-      {/* Mudança principal aqui: flex-col por padrão (celular) 
-        e md:flex-row para telas maiores. Adicionei gap-4 para dar um respiro no celular.
-      */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-0">
         
         {/* Lado Esquerdo: Logo */}

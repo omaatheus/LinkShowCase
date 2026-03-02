@@ -1,5 +1,5 @@
 import Footer from '@/app/components/landing-page/footer';
-import Header from '@/app/components/landing-page/header';
+import Header from "@/app/components/landing-page/header";
 import React from 'react';
 
 export default function TermsOfServicePage() {
