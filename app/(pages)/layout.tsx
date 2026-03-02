@@ -22,9 +22,9 @@ export default function RootLayout({
     <html lang="pt-br">
       <body
         className={`${redHatDisplay.className} bg-background-primary text-content-body antialiased min-h-screen flex flex-col`}>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+
           {children}
-        </div>
+
       </body>
       <GoogleAnalytics gaId={gaId} />
     </html>

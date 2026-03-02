@@ -1,6 +1,6 @@
 
 import FAQ from "../components/landing-page/faq";
-import { Footer } from "../components/landing-page/footer";
+import Footer from "../components/landing-page/footer";
 import Header from "../components/landing-page/header";
 import Hero from "../components/landing-page/hero";
 import Pricing from "../components/landing-page/pricing";
@@ -28,24 +28,29 @@ export default function Home() {
   })
 
   return (
-    <div className="max-w-7xl mx-auto">
-      <Header />
-      <Hero 
-      userCard={<UserCard />}
-      totalVisits={<TotalVisits totalVisits={3470} />}
-      projectCards={
-        <ProjectCard
-          isOwner={false}
-          name="Avanço tecnológico"
-          description="Descrição detalhada"
-          img="/project1.png"
+    <>
+      {/* O <main> vai centralizar os elementos da página, exceto o Footer */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow">
+        <Header />
+        <Hero 
+          userCard={<UserCard />}
+          totalVisits={<TotalVisits totalVisits={3470} />}
+          projectCards={
+            <ProjectCard
+              isOwner={false}
+              name="Avanço tecnológico"
+              description="Descrição detalhada"
+              img="/project1.png"
+            />
+          }
         />
-      }
-      />
-      {/* <VideoExplanation /> */}
-      <Pricing/>
-      <FAQ />
+        {/* <VideoExplanation /> */}
+        <Pricing/>
+        <FAQ />
+      </main>
+
+      {/* Agora o Footer está livre para ocupar 100% da tela! */}
       <Footer />
-    </div>
+    </>
   );
 }

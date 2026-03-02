@@ -1,4 +1,4 @@
-import { Footer } from '@/app/components/landing-page/footer';
+import Footer from '@/app/components/landing-page/footer';
 import Header from '@/app/components/landing-page/header';
 import React from 'react';
 
