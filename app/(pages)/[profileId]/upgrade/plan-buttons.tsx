@@ -1,13 +1,32 @@
 "use client";
 
+import { useState } from "react";
 import Button from "@/app/components/landing-page/ui/button";
 import { useStripe } from "@/app/hooks/useStripe";
 import { useParams } from "next/navigation";
 import { MONTHLY_PRICE, ANNUALLY_PRICE, QUARTERLY_PRICE } from "@/app/lib/config";
 
+type PlanType = "monthly" | "quarterly" | "annually";
+
 export default function PlanButtons() {
   const { profileId } = useParams();
   const { createStripeCheckout } = useStripe();
+  
+  const [loadingPlan, setLoadingPlan] = useState<PlanType | null>(null);
+
+  const handleCheckout = async (plan: PlanType) => {
+    try {
+      setLoadingPlan(plan); // Inicia o loading no botão clicado
+      await createStripeCheckout({
+        metadata: { profileId: profileId as string },
+        typeSubscription: plan,
+      });
+    } catch (error) {
+      console.error("Erro ao redirecionar para o Stripe:", error);
+    } finally {
+      setLoadingPlan(null); 
+    }
+  };
 
   return (
     <div className="flex flex-col md:flex-row items-center md:items-stretch justify-center gap-9 w-full">
@@ -26,16 +45,12 @@ export default function PlanButtons() {
         </div>
         
         <Button 
-          onClick={() =>
-            createStripeCheckout({
-              metadata: { profileId },
-              typeSubscription: "monthly",
-            })
-          } 
+          onClick={() => handleCheckout("monthly")} 
           variant="primary"
           className="w-full"
+          isLoading={loadingPlan === "monthly"}
         >
-          Assinar
+          {loadingPlan === "monthly" ? "Processando..." : "Assinar"}
         </Button>
       </div>
 
@@ -53,16 +68,12 @@ export default function PlanButtons() {
         </div>
         
         <Button 
-          onClick={() =>
-            createStripeCheckout({
-              metadata: { profileId },
-              typeSubscription: "quarterly",
-            })
-          } 
+          onClick={() => handleCheckout("quarterly")} 
           variant="primary"
           className="w-full"
+          isLoading={loadingPlan === "quarterly"}
         >
-          Assinar
+          {loadingPlan === "quarterly" ? "Processando..." : "Assinar"}
         </Button>
       </div>
 
@@ -85,16 +96,12 @@ export default function PlanButtons() {
             </div>
             
             <Button 
-              onClick={() =>
-                createStripeCheckout({
-                  metadata: { profileId },
-                  typeSubscription: "annually",
-                })
-              } 
+              onClick={() => handleCheckout("annually")} 
               variant="primary"
               className="w-full"
+              isLoading={loadingPlan === "annually"}
             >
-              Assinar
+              {loadingPlan === "annually" ? "Processando..." : "Assinar"}
             </Button>
           </div>
         </div>

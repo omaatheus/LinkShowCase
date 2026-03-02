@@ -5,7 +5,6 @@ import {
   User,
   Link as LinkIcon,
   AlertCircle,
-  Loader2,
 } from "lucide-react";
 import { startTransition, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -131,6 +130,20 @@ export default function EditUserCard({
     }
   }
 
+  const isFormValid = yourName.trim().length > 0 && !!(profilePic || profileData?.imagePath);
+
+  const hasChanges = 
+    yourName !== (profileData?.name || "") ||
+    yourDescription !== (profileData?.description || "") ||
+    profilePic !== (initialImage || "") ||
+    link1.title !== (profileData?.link1?.title || "") ||
+    link1.url !== (profileData?.link1?.url || "") ||
+    link2.title !== (profileData?.link2?.title || "") ||
+    link2.url !== (profileData?.link2?.url || "") ||
+    link3.title !== (profileData?.link3?.title || "") ||
+    link3.url !== (profileData?.link3?.url || "");
+
+  const isSaveButtonDisabled = isSaving || !isFormValid || !hasChanges;
   const tabVariants = {
     hidden: { opacity: 0, x: -10 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.2 } },
@@ -147,13 +160,8 @@ export default function EditUserCard({
       </button>
 
       <Modal isOpen={isModalOpen} setIsOpen={() => setIsModalOpen(false)}>
-        {/* MUDANÇAS AQUI:
-            1. w-[520px]: Largura fixa maior que antes.
-            2. h-[700px]: Altura fixa.
-            3. flex flex-col: Para organizar Header, Content, Footer verticalmente.
-        */}
         <div className="bg-white rounded-[24px] w-full md:w-[520px] h-[700px] max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
-          {/* HEADER (Fixo, não rola) */}
+          {/* HEADER  */}
           <div className="shrink-0 flex items-center justify-between p-6 border-b border-gray-100 bg-white z-20">
             <h2 className="text-xl font-bold text-gray-800">Editar Cartão</h2>
             <div className="flex bg-gray-100 p-1 rounded-xl">
@@ -173,7 +181,7 @@ export default function EditUserCard({
             </div>
           </div>
 
-          {/* CONTENT (Flex-1 ocupa o espaço restante e scrolla internamente) */}
+          {/* CONTENT  */}
           <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
             <AnimatePresence mode="wait">
               {/* --- ABA PERFIL --- */}
@@ -193,7 +201,7 @@ export default function EditUserCard({
                     >
                       {profilePic || profileData?.imagePath ? (
                         <img
-                          src={profilePic || "/profile.png"} // Use o estado que agora contém a URL correta
+                          src={profilePic || "/profile.png"} 
                           alt="Profile"
                           className="object-cover w-full h-full"
                         />
@@ -259,7 +267,7 @@ export default function EditUserCard({
                     )}
                   </div>
 
-                  {/* Input Bio (Tamanho aumentado) */}
+                  {/* Input Bio */}
                   <div className="flex flex-col gap-2">
                     <div className="flex justify-between items-end ml-1">
                       <label
@@ -277,7 +285,7 @@ export default function EditUserCard({
                                                     value={yourDescription}
                                                     onChange={handleBioChange}
                                                     maxLength={150} 
-                                                    // error={errors.projectDescription} // Caso queira validar a descrição no futuro
+                                                    // error={errors.projectDescription} 
                                                 />
                   </div>
                 </motion.div>
@@ -339,27 +347,19 @@ export default function EditUserCard({
             </AnimatePresence>
           </div>
 
-          {/* FOOTER (Fixo, não rola) */}
+          {/* FOOTER */}
           <div className="shrink-0 p-6 border-t border-gray-100 bg-gray-50/50 flex gap-3 justify-end z-20">
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="px-6 py-3 rounded-xl font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors text-sm"
-            >
-              Cancelar
-            </button>
-            <Button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="px-8 py-3 bg-[#4B00E0] hover:bg-[#3900aa] text-white rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2"
-            >
-              {isSaving ? (
-                <>
-                  <Loader2 className="animate-spin" size={18} /> Salvando...
-                </>
-              ) : (
-                "Salvar Alterações"
-              )}
+            <Button variant="ghost" onClick={() => setIsModalOpen(false)} className="px-6 py-3 rounded-xl font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors text-sm"> 
+                Cancelar
             </Button>
+<Button 
+  onClick={handleSave} 
+  disabled={isSaveButtonDisabled} 
+  className="px-8 py-3 rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:opacity-100"
+  isLoading={isSaving}
+>
+  {isSaving ? "Processando..." : "Salvar"}
+</Button>
           </div>
         </div>
       </Modal>
