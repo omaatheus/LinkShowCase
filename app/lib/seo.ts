@@ -31,6 +31,14 @@ export function getSEOTags({
       siteName: appName,
       locale: locale,
       type: "website",
+      images: [
+        {
+          url: `${appDomain}/og-image.png`, 
+          width: 1200,
+          height: 630,
+          alt: `Preview do ${appName}`,
+        },
+      ],
     },
 
     twitter: {
@@ -38,6 +46,7 @@ export function getSEOTags({
       description: appDescription,
       card: "summary_large_image",
       creator: "@oma_theuss",
+      images: [`${appDomain}/og-image.png`],
     },
 
     alternates: {

@@ -17,7 +17,7 @@ export const metadata: Metadata = getSEOTags({
   appDescription:
     "Linkslie - Ajude seus seguidores a descobrir tudo o que você faz, com um simples link.",
   keywords: ["Linkslie", "projetos", "redes sociais", "link"],
-  appDomain: "https://dev-show-case.vercel.app/",
+  appDomain: "https://linkslie.com/",
   canonicalUrlRelative: "/",
 });
 
@@ -29,7 +29,6 @@ export default function Home() {
 
   return (
     <>
-      {/* O <main> vai centralizar os elementos da página, exceto o Footer */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-grow">
         <Header />
         <Hero 
@@ -49,7 +48,6 @@ export default function Home() {
         <FAQ />
       </main>
 
-      {/* Agora o Footer está livre para ocupar 100% da tela! */}
       <Footer />
     </>
   );
