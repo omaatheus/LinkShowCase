@@ -29,7 +29,7 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* Plano Trimestral */}
+        {/* Plano Trimestral 
         <div className="w-full max-w-[304px] p-8 flex flex-col gap-7 rounded-2xl border border-gray-200 bg-white">
           <div className="flex flex-col text-left">
             <span className="text-black font-bold text-2xl">Trimestral</span>
@@ -39,7 +39,7 @@ export default function Pricing() {
             <span className="text-black font-bold text-[48px]">R${QUARTERLY_PRICE}</span>
             <span className="text-content-headline text-xl">/trim</span>
           </div>
-        </div>
+        </div>*/}
 
         {/* Plano Anual */}
         <div className="flex flex-col w-full max-w-[304px]">

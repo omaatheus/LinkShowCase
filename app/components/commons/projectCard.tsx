@@ -8,6 +8,7 @@ import { MoreVertical, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import EditProjectModal from "./EditProjectModal"; 
 
 export default function ProjectCard({
   project,
@@ -26,11 +27,10 @@ export default function ProjectCard({
   const formattedUrl = formatUrl(project?.projectUrl || "");
   const router = useRouter();
 
-  // Estados e Referências para o Menu Dropdown
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Novo estado
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Lógica para fechar o menu ao clicar fora dele
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -78,6 +78,7 @@ export default function ProjectCard({
     );
   } else {
     return (
+    <>
       <div className="w-full">
         <div className="w-full max-w-[600px] h-auto min-h-[132px] flex gap-4 sm:gap-5 bg-background-secondary p-3 sm:p-4 rounded-[20px] border border-transparent hover:border-border-secondary transition-all relative">
           <div className="size-20 sm:size-24 rounded-md overflow-hidden flex-shrink-0">
@@ -85,7 +86,6 @@ export default function ProjectCard({
           </div>
           
           <div className="flex flex-col gap-1 w-full justify-center">
-            {/* Header do Card (Cliques + Menu 3 pontos) */}
             <div className="flex justify-between items-start w-full">
               <div className="flex flex-col">
                 <span className="uppercase text-xs font-bold text-[#5000b9]">
@@ -93,7 +93,6 @@ export default function ProjectCard({
                 </span>
               </div>
 
-              {/* Menu Dropdown */}
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -108,8 +107,7 @@ export default function ProjectCard({
                     <button
                       onClick={() => {
                         setIsMenuOpen(false);
-                        // Lógica de edição vai aqui no futuro
-                        console.log("Editar projeto");
+                        setIsEditModalOpen(true); // Abre o modal de edição
                       }}
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-black transition-colors flex items-center gap-2"
                     >
@@ -132,7 +130,6 @@ export default function ProjectCard({
               </div>
             </div>
             
-            {/* Informações do Projeto */}
             <div className="flex flex-col -mt-1">
               <span className="text-black font-bold break-words">
                 {name || project?.projectName}
@@ -144,6 +141,17 @@ export default function ProjectCard({
           </div>
         </div>
       </div>
-    );
-  }
-}
+
+      {/* Renderiza o Modal de Edição */}
+      {project && (
+        <EditProjectModal
+          isOpen={isEditModalOpen}
+          setIsOpen={setIsEditModalOpen}
+          project={project}
+          profileId={profileId as string}
+          currentImg={img}
+        />
+      )}
+    </>
+  );
+}}

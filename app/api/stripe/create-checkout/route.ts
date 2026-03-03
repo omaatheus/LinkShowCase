@@ -9,8 +9,8 @@ export async function POST(req: Request) {
 
     if (typeSubscription === "monthly"){
       var price = process.env.STRIPE_MONTHLY_SUBSCRIPTION_PRICE_ID
-    } if (typeSubscription === "quarterly"){
-      var price = process.env.STRIPE_QUARTERLY_SUBSCRIPTION_PRICE_ID
+    //} if (typeSubscription === "quarterly"){
+     // var price = process.env.STRIPE_QUARTERLY_SUBSCRIPTION_PRICE_ID
     } if (typeSubscription === "annually"){
       var price = process.env.STRIPE_ANNUALLY_SUBSCRIPTION_PRICE_ID
     }

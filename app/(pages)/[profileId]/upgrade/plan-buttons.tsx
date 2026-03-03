@@ -54,7 +54,7 @@ export default function PlanButtons() {
         </Button>
       </div>
 
-      {/* Plano Trimestral */}
+      {/* Plano Trimestral 
       <div className="w-full max-w-[304px] p-8 flex flex-col justify-between gap-7 rounded-2xl border border-gray-200 bg-white">
         <div className="flex flex-col gap-7">
           <div className="flex flex-col text-left">
@@ -75,7 +75,7 @@ export default function PlanButtons() {
         >
           {loadingPlan === "quarterly" ? "Processando..." : "Assinar"}
         </Button>
-      </div>
+      </div>*/}
 
       {/* Plano Anual */}
       <div className="flex flex-col w-full max-w-[304px]">
