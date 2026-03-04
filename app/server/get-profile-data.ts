@@ -10,6 +10,7 @@ export type ProfileData = {
   imagePath: string;
   totalVisits: number;
   createdAt: number;
+  isSubscribed: boolean;
   socialMedias: {
     github?: string,
     instagram?: string,
@@ -35,12 +36,31 @@ export type ProjectData = {
 };
 
 export async function getProfileData(profileId: string) {
-  const snapshot = await db
-  .collection("profiles")
-  .doc(profileId)
-  .get();
+  const profileSnapshot = await db
+    .collection("profiles")
+    .doc(profileId)
+    .get();
 
-  return snapshot.data() as ProfileData;
+  const profileData = profileSnapshot.data() as ProfileData;
+
+  if (!profileData || !profileData.userId) {
+    return {
+      ...profileData,
+      isSubscribed: false, 
+    };
+  }
+
+  const userSnapshot = await db
+    .collection("users")
+    .doc(profileData.userId)
+    .get();
+
+  const userData = userSnapshot.data();
+
+  return {
+    ...profileData,
+    isSubscribed: userData?.isSubscribed ?? false,
+  };
 }
 
 export async function getProfileProjects(profileId: string) {

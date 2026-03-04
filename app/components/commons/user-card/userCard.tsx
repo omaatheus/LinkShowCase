@@ -21,8 +21,6 @@ export default async function UserCard({
 
   const icones = [Github, Linkedin, Twitter, Instagram, Plus];
 
-  console.log(profileImageUrl);
-
   const SocialButton = ({ 
     href, 
     Icon, 

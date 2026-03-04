@@ -13,6 +13,7 @@ import { getDownloadURLFromPath } from "@/app/lib/firebase";
 import { increaseProfileVisits } from "@/app/actions/increase-profile-visits";
 import { Metadata } from "next";
 import { ArrowRight, Sparkles } from "lucide-react";
+import FooterFree from "@/app/components/landing-page/ui/footerfree";
 
 export const metadata: Metadata = {
   title: "Linkslie - Perfil",
@@ -35,9 +36,17 @@ export default async function ProfilePage({
   const session = await auth();
   const isOwner = profileData.userId === session?.user?.id;
   const isSubscribed = session?.user?.isSubscribed ?? false;
+  const isProfileSubscribed = profileData.isSubscribed ?? false;
 
   if (!isOwner) {
     await increaseProfileVisits(profileId);
+  }
+
+  if (isOwner && !isProfileSubscribed) {
+    profileData.totalVisits = 0;
+    projects.forEach(project => {
+      project.totalVisits = 0;
+    });
   }
 
   if (isOwner && !isSubscribed) {
@@ -55,7 +64,7 @@ export default async function ProfilePage({
   );
 
   return (
-    <div className="relative min-h-screen bg-background-primary overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col bg-background-primary overflow-x-hidden">
       {/* BACKGROUND DECORATIVO */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-background-secondary/50 to-transparent" />
@@ -64,7 +73,7 @@ export default async function ProfilePage({
       </div>
 
       {/* MAIN CONTENT */}
-      <main className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20 flex flex-col lg:flex-row gap-10 lg:gap-20">
+      <main className="relative z-10 flex-grow w-full max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-12 flex flex-col lg:flex-row gap-10 lg:gap-20">
       {/* COLUNA PERFIL */}
         <div className="w-full lg:w-[30%] flex justify-center lg:justify-start">
           <div className="lg:sticky lg:top-24 flex flex-col items-center gap-4 w-full max-w-[320px]">
@@ -143,6 +152,9 @@ export default async function ProfilePage({
           )}
         </div>
       </main>
+      {!isProfileSubscribed && (
+        <FooterFree />
+      )}
     </div>
   );
 }

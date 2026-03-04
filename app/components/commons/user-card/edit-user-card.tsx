@@ -333,7 +333,7 @@ export default function EditUserCard({
                           <div className="p-2 bg-violet-100 rounded-full">
                             <Lock size={18} className="text-violet-700" />
                           </div>
-                          <span className="text-sm font-bold text-gray-800">Botão bloqueado</span>
+                          <span className="text-sm font-bold text-gray-800">Link bloqueado</span>
                           <button
                             onClick={() => {
                               setIsModalOpen(false);

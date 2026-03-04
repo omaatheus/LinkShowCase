@@ -95,7 +95,6 @@ export default function NewProject({
 
     const response = await createProject(formData);
 
-    // Proteção dupla: se o backend recusar por limite, redireciona para o upgrade
     if (response?.error === "LIMIT_REACHED") {
       setIsCreatingProject(false);
       setIsOpen(false);
@@ -119,7 +118,7 @@ export default function NewProject({
   return (
     <>
       {isLocked ? (
-        // BOTÃO BLOQUEADO PARA USUÁRIOS FREE COM 1 PROJETO
+        // LINK BLOQUEADO PARA USUÁRIOS FREE COM 2 PROJETO
         <button
           onClick={() => router.push(`/${profileId}/upgrade`)}
           className="group w-full max-w-[600px] h-[132px] rounded-2xl bg-background-secondary/40 border-2 border-dashed border-border-secondary hover:border-[#4200cd]/50 transition-all duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer"
