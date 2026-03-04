@@ -43,13 +43,6 @@ export async function getProfileData(profileId: string) {
 
   const profileData = profileSnapshot.data() as ProfileData;
 
-  if (!profileData || !profileData.userId) {
-    return {
-      ...profileData,
-      isSubscribed: false, 
-    };
-  }
-
   const userSnapshot = await db
     .collection("users")
     .doc(profileData.userId)
