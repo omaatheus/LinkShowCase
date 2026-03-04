@@ -1,21 +1,16 @@
 import NextAuth, { DefaultSession } from "next-auth";
-import { db, firebaseCert } from "./firebase";
+import { firebaseCert } from "./firebase";
 import Google from "next-auth/providers/google";
 import { FirestoreAdapter } from "@auth/firebase-adapter";
-import { Timestamp } from "firebase-admin/firestore";
-import { TRIAL_DAYS } from "./config";
 
 declare module "next-auth" {
   interface Session {
     user: {
-      createdAt: number;
-      isTrial: boolean;
+      isSubscribed: boolean;
     } & DefaultSession["user"];
   }
 
   interface User {
-    createdAt?: number;
-    isTrial?: boolean;
     isSubscribed?: boolean;
   }
 }
@@ -25,28 +20,15 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     credential: firebaseCert,
   }),
   providers: [Google],
-  events: {
-    createUser: async ({ user }) => {
-      if (!user.id) return;
-
-      await db.collection("users").doc(user.id).update({
-        createdAt: Timestamp.now().toMillis(),
-      });
+  callbacks: {
+    session({ session, user }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          isSubscribed: user.isSubscribed ?? false, 
+        },
+      };
     },
   },
-  callbacks: {
-  session({ session, user }) {
-    const createdAt = user.createdAt ?? 0;
-    return {
-      ...session,
-      user: {
-        ...session.user,
-        createdAt,
-        isTrial:
-          createdAt >
-            Date.now() - 1000 * 60 * 60 * 24 * TRIAL_DAYS,
-      },
-    };
-  },
-},
 });

@@ -4,7 +4,7 @@ import { deleteProject } from "@/app/actions/deleteProject";
 import { increaseProjectVisits } from "@/app/actions/increase-project-visits";
 import { formatUrl } from "@/app/lib/utils";
 import { ProjectData } from "@/app/server/get-profile-data";
-import { MoreVertical, Pencil, Trash2 } from "lucide-react";
+import { MoreVertical, Pencil, Trash2, Lock } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
@@ -15,13 +15,15 @@ export default function ProjectCard({
   isOwner,
   img,
   name,
-  description
+  description,
+  isSubscribed
 }: {
   project?: ProjectData;
   isOwner: boolean;
   img: string;
   name?: string;
   description?: string
+  isSubscribed?: boolean;
 }) {
   const { profileId } = useParams();
   const formattedUrl = formatUrl(project?.projectUrl || "");
@@ -88,11 +90,21 @@ export default function ProjectCard({
           <div className="flex flex-col gap-1 w-full justify-center">
             <div className="flex justify-between items-start w-full">
               <div className="flex flex-col">
-                <span className="uppercase text-xs font-bold text-[#5000b9]">
-                  {project?.totalVisits || 0} cliques
-                </span>
-              </div>
-
+  {isSubscribed ? (
+    <span className="uppercase text-xs font-bold text-[#5000b9]">
+      {project?.totalVisits || 0} cliques
+    </span>
+  ) : (
+    <Link 
+      href={`/${profileId}/upgrade`} 
+      className="uppercase text-xs font-bold text-gray-400 flex items-center gap-1 hover:text-[#5000b9] transition-colors"
+      title="Faça upgrade para ver os cliques"
+    >
+      {/* Importe o ícone Lock do lucide-react lá em cima */}
+      <Lock size={12} /> Cliques ocultos
+    </Link>
+  )}
+</div>
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}

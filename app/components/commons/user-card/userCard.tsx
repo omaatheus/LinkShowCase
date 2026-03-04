@@ -53,7 +53,9 @@ export default async function UserCard({
       
       {canEdit && (
         <div className="absolute top-4 right-4 z-50">
-           <EditUserCard profileData={profileData} initialImage={profileImageUrl} />
+           <EditUserCard 
+  isSubscribed={session?.user?.isSubscribed ?? false}  profileData={profileData} initialImage={profileImageUrl} />
+
         </div>
       )}
 

@@ -13,7 +13,6 @@ import { getDownloadURLFromPath } from "@/app/lib/firebase";
 import { increaseProfileVisits } from "@/app/actions/increase-profile-visits";
 import { Metadata } from "next";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { enforceSubscription } from "@/app/lib/auth-checks";
 
 export const metadata: Metadata = {
   title: "Linkslie - Perfil",
@@ -35,11 +34,17 @@ export default async function ProfilePage({
   const projects = await getProfileProjects(profileId);
   const session = await auth();
   const isOwner = profileData.userId === session?.user?.id;
+  const isSubscribed = session?.user?.isSubscribed ?? false;
 
-  if (isOwner) {
-    await enforceSubscription(profileId);
-  } else {
+  if (!isOwner) {
     await increaseProfileVisits(profileId);
+  }
+
+  if (isOwner && !isSubscribed) {
+    profileData.totalVisits = 0;
+    projects.forEach(project => {
+      project.totalVisits = 0;
+    });
   }
   
   const projectsWithImages = await Promise.all(
@@ -64,17 +69,18 @@ export default async function ProfilePage({
         <div className="w-full lg:w-[30%] flex justify-center lg:justify-start">
           <div className="lg:sticky lg:top-24 flex flex-col items-center gap-4 w-full max-w-[320px]">
             
-            {session?.user.isTrial && !session?.user.isSubscribed && (
+            {/* NOVO BANNER DO PLANO FREE */}
+            {isOwner && !isSubscribed && (
               <Link href={`/${profileId}/upgrade`} className="w-full group">
                 <div className="w-full bg-purple-50 border border-[#4200cd] shadow-sm rounded-3xl p-4 flex flex-col items-center gap-2 transition-all duration-300 hover:shadow-md hover:border-purple-300 hover:-translate-y-0.5">
                   
                   <span className="text-[#4200cd] text-sm font-semibold flex items-center gap-2">
                     <Sparkles className="size-4 text-[#4200cd] animate-pulse" />
-                    Modo trial ativo
+                    Plano Gratuito
                   </span>
                   
                   <span className="text-[#4200cd] text-xs font-bold flex items-center justify-center gap-1 transition-colors duration-300">
-                    Fazer Upgrade 
+                    Desbloqueie o Pro 
                     <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
                   </span>
 
@@ -88,6 +94,7 @@ export default async function ProfilePage({
               <TotalVisits
                 totalVisits={profileData.totalVisits}
                 showBar={true}
+                isSubscribed={isSubscribed}
               />
             )}
           </div>
@@ -104,12 +111,14 @@ export default async function ProfilePage({
             </p>
           </div>
 
-          {/* Usando flex-col para forçar a ordenação um abaixo do outro */}
           <div className="flex flex-col gap-4 w-full">
             {isOwner && (
               <div className="w-full animate-fade-in-up">
-                {/* Pode ser necessário ajustar o componente NewProject internamente para w-full também, caso ele tenha tamanho fixo */}
-                <NewProject profileId={profileId} />
+                <NewProject 
+                  profileId={profileId} 
+                  isSubscribed={isSubscribed} 
+                  totalProjects={projects.length} 
+                />
               </div>
             )}
 
@@ -119,6 +128,7 @@ export default async function ProfilePage({
                   project={project}
                   isOwner={isOwner}
                   img={project.imageUrl}
+                  isSubscribed={isSubscribed}
                 />
               </div>
             ))}
@@ -133,8 +143,6 @@ export default async function ProfilePage({
           )}
         </div>
       </main>
-
-      {/* FOOTER FLUTUANTE SIMPLIFICADO */}
     </div>
   );
 }

@@ -31,6 +31,7 @@ export default function PlanButtons() {
   return (
     <div className="flex flex-col md:flex-row items-center md:items-stretch justify-center gap-9 w-full">
       
+      
       {/* Plano Mensal */}
       <div className="w-full max-w-[304px] p-8 flex flex-col justify-between gap-7 rounded-2xl border border-gray-200 bg-white">
         <div className="flex flex-col gap-7">
@@ -53,29 +54,6 @@ export default function PlanButtons() {
           {loadingPlan === "monthly" ? "Processando..." : "Assinar"}
         </Button>
       </div>
-
-      {/* Plano Trimestral 
-      <div className="w-full max-w-[304px] p-8 flex flex-col justify-between gap-7 rounded-2xl border border-gray-200 bg-white">
-        <div className="flex flex-col gap-7">
-          <div className="flex flex-col text-left">
-            <span className="text-black font-bold text-2xl">Trimestral</span>
-            <span className="text-content-body">Apenas</span>
-          </div>
-          <div className="flex items-baseline gap-1">
-            <span className="text-black font-bold text-[48px]">R${QUARTERLY_PRICE}</span>
-            <span className="text-content-headline text-xl">/trim</span>
-          </div>
-        </div>
-        
-        <Button 
-          onClick={() => handleCheckout("quarterly")} 
-          variant="primary"
-          className="w-full"
-          isLoading={loadingPlan === "quarterly"}
-        >
-          {loadingPlan === "quarterly" ? "Processando..." : "Assinar"}
-        </Button>
-      </div>*/}
 
       {/* Plano Anual */}
       <div className="flex flex-col w-full max-w-[304px]">
