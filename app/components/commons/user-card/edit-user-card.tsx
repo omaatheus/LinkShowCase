@@ -5,7 +5,7 @@ import {
   User,
   Link as LinkIcon,
   AlertCircle,
-  Lock, // <-- Importamos o Lock aqui
+  Lock,
 } from "lucide-react";
 import { startTransition, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";

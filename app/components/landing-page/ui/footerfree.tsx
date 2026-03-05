@@ -12,7 +12,7 @@ export default function FooterFree() {
           >
             <Sparkles className="size-4 text-[#4200cd]" />
             <span className="text-sm font-medium text-content-body group-hover:text-content-heading transition-colors">
-              Feito por <strong className="text-[#4200cd]">Linkslie</strong>, Link em todo Lugar
+              Feito por <strong className="text-[#4200cd]">Linkslie</strong>, Links em todo lugar.
             </span>
           </Link>
         </footer>

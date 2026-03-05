@@ -10,7 +10,7 @@ export type ProfileData = {
   imagePath: string;
   totalVisits: number;
   createdAt: number;
-  isSubscribed: boolean;
+  isSubscribed?: boolean;
   socialMedias: {
     github?: string,
     instagram?: string,
@@ -22,6 +22,11 @@ export type ProfileData = {
   link2?: Link;
   link3?: Link;
   updatedAt?: number;
+  theme?: {
+    bgColor: string;
+    cardColor: string;
+    fontColor: string;
+  }
 };
 
 export type ProjectData = {
@@ -35,6 +40,23 @@ export type ProjectData = {
   totalVisits?: number;
 };
 
+export type UserData = {
+  isSubscribed?: boolean;
+  email: string;
+  image: string;
+  name: string;
+  customerId?: string;
+}
+
+export async function getUserData(userId: string){
+  const snapshot = await db
+    .collection("users")
+    .doc(userId)
+    .get();
+
+  return snapshot.data() as UserData;
+}
+
 export async function getProfileData(profileId: string) {
   const profileSnapshot = await db
     .collection("profiles")
@@ -43,12 +65,7 @@ export async function getProfileData(profileId: string) {
 
   const profileData = profileSnapshot.data() as ProfileData;
 
-  const userSnapshot = await db
-    .collection("users")
-    .doc(profileData.userId)
-    .get();
-
-  const userData = userSnapshot.data();
+  const userData = await getUserData(profileData.userId);
 
   return {
     ...profileData,
