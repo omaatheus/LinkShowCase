@@ -16,7 +16,8 @@ export default function ProjectCard({
   img,
   name,
   description,
-  isSubscribed
+  isSubscribed,
+  clicks=0,
 }: {
   project?: ProjectData;
   isOwner: boolean;
@@ -24,6 +25,7 @@ export default function ProjectCard({
   name?: string;
   description?: string
   isSubscribed?: boolean;
+  clicks?: number;
 }) {
   const { profileId } = useParams();
   const formattedUrl = formatUrl(project?.projectUrl || "");
@@ -92,15 +94,14 @@ export default function ProjectCard({
               <div className="flex flex-col">
   {isSubscribed ? (
     <span className="uppercase text-xs font-bold text-[#5000b9]">
-      {project?.totalVisits || 0} cliques
-    </span>
+        {project?.totalVisits || clicks} cliques
+      </span>
   ) : (
     <Link 
       href={`/${profileId}/upgrade`} 
       className="uppercase text-xs font-bold text-gray-400 flex items-center gap-1 hover:text-[#5000b9] transition-colors"
       title="Faça upgrade para ver os cliques"
     >
-      {/* Importe o ícone Lock do lucide-react lá em cima */}
       <Lock size={12} /> Cliques ocultos
     </Link>
   )}

@@ -5,6 +5,7 @@ import DesignEditor from "./DesignEditor";
 import UserCard from "@/app/components/commons/user-card/userCard";
 import ProjectCard from "@/app/components/commons/projectCard";
 import { getDownloadURLFromPath } from "@/app/lib/firebase";
+import { TotalVisits } from "@/app/components/commons/totalVisits";
 
 export default async function DesignPage({
   params,
@@ -42,16 +43,19 @@ export default async function DesignPage({
   const projectCards = projectsWithImages.map(project => (
     <ProjectCard
       key={project.id}
-      isOwner={false}
+      isOwner={true}
       name={project.projectName}
       description={project.projectDescription}
       img={project.imageUrl}
+      isSubscribed={isSubscribed}
+      clicks={project.totalVisits}
     />
   ));
 
   return (
     <div className="min-h-screen bg-background-primary">
       <DesignEditor 
+        totalVisits={<TotalVisits totalVisits={profileData.totalVisits} isSubscribed={isSubscribed}/>}
         profileId={profileId}
         isSubscribed={isSubscribed}
         userCard={<UserCard profileData={profileData} isOwner={true} />}
