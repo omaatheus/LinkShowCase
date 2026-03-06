@@ -50,7 +50,7 @@ export default async function LinkInBio({ params }: ParamsProps) {
       <Hero 
         texts={texts}
         userCard={<UserCard />}
-        totalVisits={<TotalVisits totalVisits={3470} />}
+        totalVisits={<TotalVisits totalVisits={3470} isSubscribed={true} />}
         projectCards={
           <ProjectCard
             isOwner={false}

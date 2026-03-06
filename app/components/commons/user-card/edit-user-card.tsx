@@ -5,6 +5,7 @@ import {
   User,
   Link as LinkIcon,
   AlertCircle,
+  Lock,
 } from "lucide-react";
 import { startTransition, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,9 +25,11 @@ import TextArea from "../../landing-page/ui/textarea";
 export default function EditUserCard({
   profileData,
   initialImage,
+  isSubscribed, 
 }: {
   profileData?: ProfileData;
   initialImage?: string;
+  isSubscribed: boolean;
 }) {
   const router = useRouter();
   const { profileId } = useParams();
@@ -107,14 +110,18 @@ export default function EditUserCard({
       formData.append("profilePic", compressedFile[0]);
     }
 
+    const finalLink1 = link1;
+    const finalLink2 = isSubscribed ? link2 : { title: "", url: "" };
+    const finalLink3 = isSubscribed ? link3 : { title: "", url: "" };
+
     try {
       await Promise.all([
         saveProfile(formData),
         addCustomLinks({
           profileId: profileId as string,
-          link1,
-          link2,
-          link3,
+          link1: finalLink1,
+          link2: finalLink2,
+          link3: finalLink3,
         }),
       ]);
 
@@ -279,14 +286,13 @@ export default function EditUserCard({
                     </div>
                     
                     <TextArea
-                                                    id="project-description"
-                                                    placeholder="Breve descrição..."
-                                                    className="h-28 resize-none"
-                                                    value={yourDescription}
-                                                    onChange={handleBioChange}
-                                                    maxLength={150} 
-                                                    // error={errors.projectDescription} 
-                                                />
+                        id="project-description"
+                        placeholder="Breve descrição..."
+                        className="h-28 resize-none"
+                        value={yourDescription}
+                        onChange={handleBioChange}
+                        maxLength={150} 
+                    />
                   </div>
                 </motion.div>
               )}
@@ -309,15 +315,41 @@ export default function EditUserCard({
                   </div>
 
                   {[
-                    { state: link1, set: setLink1, label: "Botão 1" },
-                    { state: link2, set: setLink2, label: "Botão 2" },
-                    { state: link3, set: setLink3, label: "Botão 3" },
+                    { state: link1, set: setLink1, label: "Botão 1", isLocked: false },
+                    { state: link2, set: setLink2, label: "Botão 2", isLocked: !isSubscribed }, 
+                    { state: link3, set: setLink3, label: "Botão 3", isLocked: !isSubscribed },
                   ].map((item, index) => (
                     <div
                       key={index}
-                      className="group border border-gray-100 rounded-2xl p-4 hover:border-violet-200 hover:shadow-sm transition-all bg-white"
+                      className={`group border rounded-2xl p-4 transition-all relative overflow-hidden ${
+                        item.isLocked
+                          ? "border-dashed border-gray-200 bg-gray-50/50"
+                          : "border-gray-100 bg-white hover:border-violet-200 hover:shadow-sm"
+                      }`}
                     >
-                      <div className="flex items-center gap-2 mb-3 text-gray-500 group-hover:text-violet-600 transition-colors font-semibold text-xs uppercase tracking-wider">
+                      {/* OVERLAY DE BLOQUEIO */}
+                      {item.isLocked && (
+                        <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-[1.5px] flex flex-col items-center justify-center gap-2 transition-all">
+                          <div className="p-2 bg-violet-100 rounded-full">
+                            <Lock size={18} className="text-violet-700" />
+                          </div>
+                          <span className="text-sm font-bold text-gray-800">Link bloqueado</span>
+                          <button
+                            onClick={() => {
+                              setIsModalOpen(false);
+                              router.push(`/${profileId}/upgrade`);
+                            }}
+                            className="text-xs text-violet-700 font-bold hover:underline"
+                          >
+                            Desbloqueie no plano Pro &rarr;
+                          </button>
+                        </div>
+                      )}
+
+                      <div className={`flex items-center gap-2 mb-3 font-semibold text-xs uppercase tracking-wider ${
+                          item.isLocked ? "text-gray-400" : "text-gray-500 group-hover:text-violet-600 transition-colors"
+                        }`}
+                      >
                         <LinkIcon size={14} /> {item.label}
                       </div>
                       <div className="grid gap-3">
@@ -328,7 +360,8 @@ export default function EditUserCard({
                           onChange={(e) =>
                             item.set({ ...item.state, title: e.target.value })
                           }
-                          className="w-full p-3 bg-gray-50 rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-violet-100 transition-all"
+                          disabled={item.isLocked}
+                          className="w-full p-3 bg-gray-50 rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-violet-100 transition-all disabled:opacity-50"
                         />
                         <input
                           type="text"
@@ -337,7 +370,8 @@ export default function EditUserCard({
                           onChange={(e) =>
                             item.set({ ...item.state, url: e.target.value })
                           }
-                          className="w-full p-3 bg-gray-50 rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-violet-100 transition-all"
+                          disabled={item.isLocked}
+                          className="w-full p-3 bg-gray-50 rounded-xl text-sm outline-none focus:bg-white focus:ring-2 focus:ring-violet-100 transition-all disabled:opacity-50"
                         />
                       </div>
                     </div>
@@ -352,14 +386,14 @@ export default function EditUserCard({
             <Button variant="ghost" onClick={() => setIsModalOpen(false)} className="px-6 py-3 rounded-xl font-bold text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors text-sm"> 
                 Cancelar
             </Button>
-<Button 
-  onClick={handleSave} 
-  disabled={isSaveButtonDisabled} 
-  className="px-8 py-3 rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:opacity-100"
-  isLoading={isSaving}
->
-  {isSaving ? "Processando..." : "Salvar"}
-</Button>
+            <Button 
+              onClick={handleSave} 
+              disabled={isSaveButtonDisabled} 
+              className="px-8 py-3 rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:opacity-100"
+              isLoading={isSaving}
+            >
+              {isSaving ? "Processando..." : "Salvar"}
+            </Button>
           </div>
         </div>
       </Modal>

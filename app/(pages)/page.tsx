@@ -33,7 +33,7 @@ export default function Home() {
         <Header />
         <Hero 
           userCard={<UserCard />}
-          totalVisits={<TotalVisits totalVisits={3470} />}
+          totalVisits={<TotalVisits totalVisits={3470} isSubscribed={true}/>}
           projectCards={
             <ProjectCard
               isOwner={false}

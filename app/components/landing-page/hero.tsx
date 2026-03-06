@@ -36,7 +36,6 @@ export default function Hero({
   return (
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-24 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8 overflow-hidden">
       
-      {/* Coluna da Esquerda */}
       <motion.div 
         className="w-full lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left"
         variants={containerVariants}

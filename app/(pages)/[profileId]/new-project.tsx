@@ -6,12 +6,20 @@ import Modal from "@/app/components/landing-page/ui/modal";
 import TextArea from "@/app/components/landing-page/ui/textarea";
 import TextInput from "@/app/components/landing-page/ui/textinput";
 import { compressFiles, handleImageInput, triggerImageInput } from "@/app/lib/utils";
-import { ArrowUpFromLine, ImagePlus, Loader2, Plus, X, AlertCircle } from "lucide-react";
+import { ArrowUpFromLine, ImagePlus, Loader2, Plus, X, AlertCircle, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { startTransition, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function NewProject({ profileId }: { profileId: string }) {
+export default function NewProject({ 
+  profileId,
+  isSubscribed,
+  totalProjects
+}: { 
+  profileId: string;
+  isSubscribed: boolean;
+  totalProjects: number;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   
   const [projectName, setProjectName] = useState("");
@@ -27,6 +35,9 @@ export default function NewProject({ profileId }: { profileId: string }) {
   });
 
   const router = useRouter();
+
+  // Verifica se o usuário atingiu o limite do Freemium
+  const isLocked = !isSubscribed && totalProjects >= 1;
 
   useEffect(() => {
     if (!isOpen) {
@@ -82,7 +93,14 @@ export default function NewProject({ profileId }: { profileId: string }) {
     formData.append("projectDescription", projectDescription);
     formData.append("projectUrl", projectUrl);
 
-    await createProject(formData);
+    const response = await createProject(formData);
+
+    if (response?.error === "LIMIT_REACHED") {
+      setIsCreatingProject(false);
+      setIsOpen(false);
+      router.push(`/${profileId}/upgrade`);
+      return;
+    }
 
     startTransition(() => {
       setIsOpen(false);
@@ -99,16 +117,33 @@ export default function NewProject({ profileId }: { profileId: string }) {
 
   return (
     <>
-      <button
-        onClick={handleOpenModal}
-        className="group w-full max-w-[600px] h-[132px] rounded-2xl bg-background-secondary border border-transparent hover:border-border-secondary transition-all duration-300 flex flex-col items-center justify-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
-      >
-        <div className="p-3 rounded-full bg-background-tertiary group-hover:bg-accent-green/10 transition-colors">
-            <Plus className="size-8 text-accent-green" />
-        </div>
-        <span className="font-medium text-content-body">Novo Link</span>
-      </button>
+      {isLocked ? (
+        // LINK BLOQUEADO PARA USUÁRIOS FREE COM 2 PROJETO
+        <button
+          onClick={() => router.push(`/${profileId}/upgrade`)}
+          className="group w-full max-w-[600px] h-[132px] rounded-2xl bg-background-secondary/40 border-2 border-dashed border-border-secondary hover:border-[#4200cd]/50 transition-all duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer"
+        >
+          <div className="p-2.5 rounded-full bg-background-tertiary group-hover:bg-[#4200cd]/10 transition-colors">
+              <Lock className="size-6 text-content-body/50 group-hover:text-[#4200cd] transition-colors" />
+          </div>
+          <span className="font-medium text-content-body/80 flex flex-col items-center gap-1">
+              Limite de Projetos Atingido
+              <span className="text-xs text-[#4200cd] font-bold">Faça upgrade para ilimitado</span>
+          </span>
+        </button>
+      ) : (
+        <button
+          onClick={handleOpenModal}
+          className="group w-full max-w-[600px] h-[132px] rounded-2xl bg-background-secondary border border-transparent hover:border-border-secondary transition-all duration-300 flex flex-col items-center justify-center gap-3 shadow-sm hover:shadow-md cursor-pointer"
+        >
+          <div className="p-3 rounded-full bg-background-tertiary group-hover:bg-accent-green/10 transition-colors">
+              <Plus className="size-8 text-accent-green" />
+          </div>
+          <span className="font-medium text-content-body">Novo Link</span>
+        </button>
+      )}
 
+      {/* O Modal permanece o mesmo... */}
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <AnimatePresence>
             {isOpen && (
@@ -245,7 +280,6 @@ export default function NewProject({ profileId }: { profileId: string }) {
                                 value={projectDescription}
                                 onChange={(e) => setProjectDescription(e.target.value)}
                                 maxLength={150} 
-                                // error={errors.projectDescription} // Caso queira validar a descrição no futuro
                             />
                         </div>
                     </div>

@@ -12,7 +12,7 @@ const faqItems = [
   {
     title: "A plataforma oferece algum teste gratuito?",
     description:
-      "Sim! Você pode experimentar o Linkslie gratuitamente por 15 dias. Durante esse período, terá acesso a todas as funcionalidades para decidir se deseja continuar com a assinatura.",
+      "Sim! O Linkslie possui um plano gratuito que você pode usar pelo tempo que quiser. Ele inclui as funcionalidades essenciais para você começar, e você sempre pode fazer o upgrade para a assinatura quando precisar de recursos mais avançados.",
   },
   {
     title: "Preciso ter conhecimento técnico para usar o Linkslie?",
