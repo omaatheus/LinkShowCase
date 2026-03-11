@@ -117,7 +117,7 @@ export default function EditProjectModal({ isOpen, setIsOpen, project, profileId
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.3, type: "spring", stiffness: 260, damping: 20 }}
-            className="bg-background-primary w-full max-w-[700px] p-8 rounded-2xl flex flex-col gap-6 relative shadow-xl overflow-hidden"
+            className="bg-background-primary w-[90vw] max-w-2xl max-h-[85dvh] p-8 rounded-2xl flex flex-col gap-6 relative shadow-xl overflow-y-auto"
           >
             <div className="flex items-center justify-between border-b border-border-secondary/30 pb-4">
               <h2 className="text-2xl font-bold text-content-heading">Editar Link</h2>
