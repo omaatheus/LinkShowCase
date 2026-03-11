@@ -210,12 +210,13 @@ export default function EditProjectModal({ isOpen, setIsOpen, project, profileId
             </div>
 
             <div className="flex gap-4 justify-end pt-4 border-t border-border-secondary/30">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-6 py-2 rounded-xl font-semibold text-content-body hover:bg-background-tertiary transition-colors"
-              >
-                Cancelar
-              </button>
+              <Button 
+                                      onClick={() => setIsOpen(false)}
+                                      className="px-6 py-2 rounded-xl font-normal text-content-body hover:bg-background-tertiary transition-colors"
+                                      variant="ghost"
+                                  >
+                                      Cancelar
+                                  </Button>
               <Button 
                             onClick={handleUpdateProject} 
                             disabled={!hasChanges} 

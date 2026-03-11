@@ -174,13 +174,13 @@ export default function EditSocialLinks({
           </div>
 
           <div className="flex gap-3 justify-end items-center pt-6 border-t border-gray-100 relative z-10">
-            <button
+            <Button 
               onClick={handleCloseModal}
-              disabled={isSavingSocialLinks}
-              className="px-5 py-2.5 text-sm font-semibold text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-xl transition-all disabled:opacity-50"
-            >
-              Cancelar
-            </button>
+                                                  className="px-6 py-2 rounded-xl font-normal text-content-body hover:bg-background-tertiary transition-colors"
+                                                  variant="ghost"
+                                              >
+                                                  Cancelar
+                                              </Button>
             
             <div className={!hasChanges ? "cursor-not-allowed" : ""}>
               
