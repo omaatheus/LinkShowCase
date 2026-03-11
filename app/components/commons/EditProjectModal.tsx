@@ -109,7 +109,7 @@ export default function EditProjectModal({ isOpen, setIsOpen, project, profileId
   };
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Modal closeOnClickOutside={false} isOpen={isOpen} setIsOpen={setIsOpen}>
       <AnimatePresence>
         {isOpen && (
           <motion.div 
@@ -210,21 +210,21 @@ export default function EditProjectModal({ isOpen, setIsOpen, project, profileId
             </div>
 
             <div className="flex gap-4 justify-end pt-4 border-t border-border-secondary/30">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-6 py-2 rounded-xl font-semibold text-content-body hover:bg-background-tertiary transition-colors"
-              >
-                Cancelar
-              </button>
-              
               <Button 
-                onClick={handleUpdateProject} 
-                disabled={!hasChanges} 
-                isLoading={isUpdating}
-                className="min-w-[120px]"
-              >
-                Salvar Alterações
-              </Button>
+                                      onClick={() => setIsOpen(false)}
+                                      className="px-6 py-2 rounded-xl font-normal text-content-body hover:bg-background-tertiary transition-colors"
+                                      variant="ghost"
+                                  >
+                                      Cancelar
+                                  </Button>
+              <Button 
+                            onClick={handleUpdateProject} 
+                            disabled={!hasChanges} 
+                            className="px-8 py-3 rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:opacity-100"
+                            isLoading={isUpdating}
+                          >
+                            {isUpdating ? "Salvando" : "Salvar"}
+                          </Button>
 
             </div>
           </motion.div>

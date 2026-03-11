@@ -1,4 +1,4 @@
-import Header from "@/app/components/landing-page/header";
+import Header from "@/app/components/landing-page/header/header";
 import PlanButtons from "./plan-buttons";
 import { Metadata } from "next";
 import { getProfileData } from "@/app/server/get-profile-data";

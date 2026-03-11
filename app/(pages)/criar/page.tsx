@@ -1,4 +1,4 @@
-import Header from "@/app/components/landing-page/header";
+import Header from "@/app/components/landing-page/header/header";
 import { Rocket } from "lucide-react";
 import CreateLinkForm from "./create-link-form";
 import { trackServerEvent } from "@/app/lib/mixpanel";

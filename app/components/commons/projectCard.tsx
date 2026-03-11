@@ -32,7 +32,7 @@ export default function ProjectCard({
   const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Novo estado
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -155,7 +155,6 @@ export default function ProjectCard({
         </div>
       </div>
 
-      {/* Renderiza o Modal de Edição */}
       {project && (
         <EditProjectModal
           isOpen={isEditModalOpen}

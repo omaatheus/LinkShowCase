@@ -118,7 +118,6 @@ export default function NewProject({
   return (
     <>
       {isLocked ? (
-        // LINK BLOQUEADO PARA USUÁRIOS FREE COM 2 PROJETO
         <button
           onClick={() => router.push(`/${profileId}/upgrade`)}
           className="group w-full max-w-[600px] h-[132px] rounded-2xl bg-background-secondary/40 border-2 border-dashed border-border-secondary hover:border-[#4200cd]/50 transition-all duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer"
@@ -286,24 +285,21 @@ export default function NewProject({
                 </div>
 
                 <div className="flex gap-4 justify-end pt-4 border-t border-border-secondary/30">
-                    <button
-                        onClick={handleCloseModal}
-                        className="px-6 py-2 rounded-xl font-semibold text-content-body hover:bg-background-tertiary transition-colors"
+                    <Button 
+                        onClick={() => setIsOpen(false)}
+                        className="px-6 py-2 rounded-xl font-normal text-content-body hover:bg-background-tertiary transition-colors"
+                        variant="ghost"
                     >
                         Cancelar
-                    </button>
+                    </Button>
                     <Button 
                         onClick={handleCreateProject} 
                         disabled={isCreatingProject}
                         className="min-w-[120px]"
+                        isLoading={isCreatingProject}
+                        variant="primary"
                     >
-                        {isCreatingProject ? (
-                            <span className="flex items-center gap-2 justify-center">
-                                <Loader2 className="animate-spin size-4" /> Salvando
-                            </span>
-                        ) : (
-                            "Criar Link"
-                        )}
+                        Criar Link
                     </Button>
                 </div>
 

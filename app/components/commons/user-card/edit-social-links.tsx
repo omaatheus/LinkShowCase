@@ -57,7 +57,6 @@ export default function EditSocialLinks({
 
   const { profileId } = useParams();
 
-  // Lógica de bloqueio
   const hasChanges =
     github !== initialGithub ||
     instagram !== initialInstagram ||
@@ -105,6 +104,9 @@ export default function EditSocialLinks({
       router.refresh();
     });
   }
+
+  const isSaveButtonDisabled = isSavingSocialLinks || !hasChanges;
+
 
   return (
     <>
@@ -172,34 +174,24 @@ export default function EditSocialLinks({
           </div>
 
           <div className="flex gap-3 justify-end items-center pt-6 border-t border-gray-100 relative z-10">
-            <button
+            <Button 
               onClick={handleCloseModal}
-              disabled={isSavingSocialLinks}
-              className="px-5 py-2.5 text-sm font-semibold text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-xl transition-all disabled:opacity-50"
-            >
-              Cancelar
-            </button>
+                                                  className="px-6 py-2 rounded-xl font-normal text-content-body hover:bg-background-tertiary transition-colors"
+                                                  variant="ghost"
+                                              >
+                                                  Cancelar
+                                              </Button>
             
             <div className={!hasChanges ? "cursor-not-allowed" : ""}>
-              <Button
-                onClick={handleAddSocialLinks}
-                disabled={isSavingSocialLinks || !hasChanges}
-                /* 2. SOLUÇÃO DO BOTÃO: Largura fixa w-[170px] e flex para o ícone */
-                className={`flex items-center justify-center gap-2 w-[170px] px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 ${
-                  hasChanges 
-                    ? "shadow-sm hover:shadow-md hover:-translate-y-0.5" 
-                    : "!bg-gray-100 !text-gray-400 !shadow-none pointer-events-none"
-                }`}
-              >
-                {isSavingSocialLinks ? (
-                  <>
-                    <Loader2 size={18} className="animate-spin" />
-                    <span>Salvando...</span>
-                  </>
-                ) : (
-                  "Salvar alterações"
-                )}
-              </Button>
+              
+              <Button 
+                            onClick={handleAddSocialLinks} 
+                            disabled={isSaveButtonDisabled} 
+                            className="px-8 py-3 rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:opacity-100"
+                            isLoading={isSavingSocialLinks}
+                          >
+                            {isSavingSocialLinks ? "Salvando" : "Salvar"}
+                          </Button>
             </div>
           </div>
 
