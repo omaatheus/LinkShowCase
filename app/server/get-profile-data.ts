@@ -65,6 +65,8 @@ export async function getProfileData(profileId: string) {
 
   const profileData = profileSnapshot.data() as ProfileData;
 
+  if (!profileData) return null;
+
   const userData = await getUserData(profileData.userId);
 
   return {

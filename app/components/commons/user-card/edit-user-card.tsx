@@ -404,7 +404,7 @@ export default function EditUserCard({
               className="px-8 py-3 rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:opacity-100"
               isLoading={isSaving}
             >
-              {isSaving ? "Processando..." : "Salvar"}
+              {isSaving ? "Salvando" : "Salvar"}
             </Button>
           </div>
         </div>
