@@ -2,7 +2,7 @@ import ProjectCard from "@/app/components/commons/projectCard";
 import { TotalVisits } from "@/app/components/commons/totalVisits";
 import UserCard from "@/app/components/commons/user-card/userCard";
 import FAQ from "@/app/components/landing-page/faq";
-import Header from "@/app/components/landing-page/header";
+import Header from "@/app/components/landing-page/header/header";
 import Hero from "@/app/components/landing-page/hero";
 import Pricing from "@/app/components/landing-page/pricing";
 import VideoExplanation from "@/app/components/landing-page/videoExplanation";
