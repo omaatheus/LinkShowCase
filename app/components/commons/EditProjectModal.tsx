@@ -216,15 +216,14 @@ export default function EditProjectModal({ isOpen, setIsOpen, project, profileId
               >
                 Cancelar
               </button>
-              
               <Button 
-                onClick={handleUpdateProject} 
-                disabled={!hasChanges} 
-                isLoading={isUpdating}
-                className="min-w-[120px]"
-              >
-                Salvar Alterações
-              </Button>
+                            onClick={handleUpdateProject} 
+                            disabled={!hasChanges} 
+                            className="px-8 py-3 rounded-xl font-bold shadow-lg shadow-violet-200 transition-all flex items-center gap-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:shadow-none disabled:cursor-not-allowed disabled:hover:opacity-100"
+                            isLoading={isUpdating}
+                          >
+                            {isUpdating ? "Salvando" : "Salvar"}
+                          </Button>
 
             </div>
           </motion.div>
