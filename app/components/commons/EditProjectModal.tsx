@@ -109,7 +109,7 @@ export default function EditProjectModal({ isOpen, setIsOpen, project, profileId
   };
 
   return (
-    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+    <Modal closeOnClickOutside={false} isOpen={isOpen} setIsOpen={setIsOpen}>
       <AnimatePresence>
         {isOpen && (
           <motion.div 

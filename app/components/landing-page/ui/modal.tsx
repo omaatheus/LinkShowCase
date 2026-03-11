@@ -8,10 +8,12 @@ export default function Modal({
   children,
   isOpen,
   setIsOpen,
+  closeOnClickOutside = false,
 }: {
   children: React.ReactNode;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  closeOnClickOutside?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
@@ -21,7 +23,9 @@ export default function Modal({
   }, []);
 
   useOnClickOutside(ref as RefObject<HTMLDivElement>, () => {
-    setIsOpen(false);
+    if (!closeOnClickOutside) {
+      setIsOpen(false);
+    }
   });
 
   if (!isOpen || !mounted) return null;
