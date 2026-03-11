@@ -8,7 +8,7 @@ export default function Modal({
   children,
   isOpen,
   setIsOpen,
-  closeOnClickOutside = false,
+  closeOnClickOutside = false, 
 }: {
   children: React.ReactNode;
   isOpen: boolean;
@@ -23,7 +23,7 @@ export default function Modal({
   }, []);
 
   useOnClickOutside(ref as RefObject<HTMLDivElement>, () => {
-    if (!closeOnClickOutside) {
+    if (closeOnClickOutside) {
       setIsOpen(false);
     }
   });
