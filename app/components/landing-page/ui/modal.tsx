@@ -1,7 +1,7 @@
 "use client";
 
 import useOnClickOutside from "@/app/hooks/useOnClickOuside";
-import { RefObject, useRef, useEffect, useState } from "react";
+import { RefObject, useRef, useEffect, useState, use } from "react";
 import { createPortal } from "react-dom";
 
 export default function Modal({
@@ -27,6 +27,18 @@ export default function Modal({
       setIsOpen(false);
     }
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   if (!isOpen || !mounted) return null;
   return createPortal(
