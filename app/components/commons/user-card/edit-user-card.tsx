@@ -7,7 +7,7 @@ import {
   AlertCircle,
   Lock,
 } from "lucide-react";
-import { startTransition, useState } from "react";
+import { startTransition, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   compressFiles,
@@ -64,6 +64,18 @@ export default function EditUserCard({
   const maxBioLength = 150;
   const currentBioLength = yourDescription.length;
   const isBioLimitReached = currentBioLength >= maxBioLength;
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isModalOpen]);
 
   const handleBioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const text = e.target.value;
@@ -167,7 +179,7 @@ export default function EditUserCard({
       </button>
 
       <Modal isOpen={isModalOpen} setIsOpen={() => setIsModalOpen(false)}>
-        <div className="bg-white rounded-[24px] w-full md:w-[520px] h-[700px] max-h-[90vh] flex flex-col shadow-2xl overflow-hidden relative">
+        <div className="bg-white rounded-[24px] w-[90vw] max-w-[520px] h-[700px] max-h-[85dvh] flex flex-col shadow-2xl overflow-hidden relative">
           {/* HEADER  */}
           <div className="shrink-0 flex items-center justify-between p-6 border-b border-gray-100 bg-white z-20">
             <h2 className="text-xl font-bold text-gray-800">Editar Cartão</h2>
@@ -194,13 +206,13 @@ export default function EditUserCard({
               {/* --- ABA PERFIL --- */}
               {activeTab === "profile" && (
                 <motion.div
-                  key="profile"
-                  variants={tabVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="flex flex-col gap-6 pb-4"
-                >
+  key="profile"
+  variants={tabVariants}
+  initial="hidden"
+  animate="visible"
+  exit="exit"
+  className="w-full flex flex-col gap-6 pb-4" 
+>
                   {/* Upload de Imagem */}
                   <div className="flex flex-col items-center gap-3">
                     <div
@@ -300,13 +312,13 @@ export default function EditUserCard({
               {/* --- ABA LINKS --- */}
               {activeTab === "links" && (
                 <motion.div
-                  key="links"
-                  variants={tabVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  className="flex flex-col gap-4 pb-4"
-                >
+  key="links"
+  variants={tabVariants}
+  initial="hidden"
+  animate="visible"
+  exit="exit"
+  className="w-full flex flex-col gap-4 pb-4"
+>
                   <div className="p-4 bg-violet-50 rounded-xl mb-2">
                     <p className="text-sm text-violet-700 font-medium">
                       Adicione botões destacados para seus projetos, portfólio
