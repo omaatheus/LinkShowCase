@@ -2,13 +2,12 @@
 
 import { Github, Instagram, Linkedin, Plus, Twitter, Edit, Link2, Loader2 } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { startTransition, useState } from "react";
+import { startTransition, useState, useEffect } from "react";
 import Modal from "../../landing-page/ui/modal";
 import TextInput from "../../landing-page/ui/textinput";
 import Button from "../../landing-page/ui/button";
 import createSocialLinks from "@/app/actions/create-social-links";
 
-// 1. SOLUÇÃO DO BUG: Componente movido para fora da função principal
 const SocialInputCard = ({ icon: Icon, label, placeholder, value, onChange, colorClass }: any) => (
   <div className="group relative flex flex-col gap-1.5">
     <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">
@@ -68,6 +67,17 @@ export default function EditSocialLinks({
   const hasSocialLinks =
     initialGithub || initialInstagram || initialLinkedin || initialTwitter;
 
+    useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isModalOpen]);
   function handleCloseModal() {
     setGithub(initialGithub);
     setInstagram(initialInstagram);
@@ -110,7 +120,7 @@ export default function EditSocialLinks({
       </button>
 
       <Modal isOpen={isModalOpen} setIsOpen={handleCloseModal}>
-        <div className="bg-white p-6 sm:p-8 rounded-[32px] flex flex-col gap-8 w-[90vw] max-w-[440px] shadow-2xl relative overflow-hidden">
+        <div className="bg-white p-6 sm:p-8 rounded-[32px] flex flex-col gap-8 w-[90vw] max-w-[440px] max-h-[85dvh] overflow-y-auto shadow-2xl relative scrollbar-hide">
           
           <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-gray-50 to-transparent pointer-events-none" />
 
