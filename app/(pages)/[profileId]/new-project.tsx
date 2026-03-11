@@ -143,7 +143,7 @@ export default function NewProject({
       )}
 
       {/* O Modal permanece o mesmo... */}
-      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Modal closeOnClickOutside={false} isOpen={isOpen} setIsOpen={setIsOpen}>
         <AnimatePresence>
             {isOpen && (
                 <motion.div 
